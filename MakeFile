@@ -1,0 +1,17 @@
+DOCKER_COMPOSE_FILE := docker/docker-compose.yml
+
+init:
+	echo "Pulling latest service web_blog..."
+	docker-compose -f $(DOCKER_COMPOSE_FILE) build --pull web_blog
+	echo "Run latest service db and pip install packages..."
+	docker-compose -f $(DOCKER_COMPOSE_FILE) run --rm web_blog pip install -r requirements.txt
+	echo "Run latest service db and migrate database..."
+	docker-compose -f $(DOCKER_COMPOSE_FILE) run --rm web_blog python manage.py migrate
+
+start:
+	echo "Start docker..."
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d --build
+
+stop:
+	echo "Stop docker..."
+	docker-compose -f $(DOCKER_COMPOSE_FILE) stop
