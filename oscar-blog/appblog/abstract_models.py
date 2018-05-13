@@ -23,17 +23,21 @@ class AbstractCategory(Timestamp):
     def __str__(self):
         return self.name
 
+    @property
+    def get_number_posts(self):
+        return AbstractCategoryGroup.objects.filter(category__name=self.name).count()
+
 
 class AbstractPost(Timestamp):
 
     title = models.CharField(max_length=200)
-    content = models.CharField(max_length=2000)
+    content = models.TextField(blank=True)
     featured_image = models.ImageField(_("Featured Image"), upload_to=settings.OSCAR_IMAGE_FOLDER)
     post_date = models.DateField(default=timezone.now)
-    authour = models.ForeignKey(AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
     category = models.ManyToManyField(
         AbstractCategory, blank=True, through='AbstractCategoryGroup', verbose_name=_("Category"))
-    excerpt = models.CharField(max_length=1000)
+    excerpt = models.TextField(blank=True)
 
     def __str__(self):
         return self.title
@@ -41,8 +45,8 @@ class AbstractPost(Timestamp):
 
 class AbstractCategoryGroup(Timestamp):
     post = models.ForeignKey(AbstractPost, on_delete=models.CASCADE)
-    catagory = models.ForeignKey(AbstractCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(AbstractCategory, on_delete=models.CASCADE)
     group = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.group
+        return '{}-{}'.format(self.post, self.category)

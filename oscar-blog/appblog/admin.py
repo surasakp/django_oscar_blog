@@ -4,8 +4,8 @@ from django.contrib import admin
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'authour', 'post_date', 'created_at', 'updated_at')
-    search_fields = ('title', 'authour__username')
+    list_display = ('title', 'author', 'post_date', 'created_at', 'updated_at')
+    search_fields = ('title', 'author__username')
     list_filter = ['post_date']
 
 

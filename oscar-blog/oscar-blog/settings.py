@@ -171,6 +171,6 @@ OSCAR_DASHBOARD_NAVIGATION[5]['children'].extend([
     },
     {
         'label': _('Blog Categorys'),
-        'url_name': 'dashboard:reviews-list',
+        'url_name': 'blog-dashboard:blog-category-list',
     }]
 )
